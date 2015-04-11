@@ -31,7 +31,7 @@ public:
 	void mouseClicked(int x, int y, bool shift, bool ctrl, bool alt);
 	void mouseMoved(int x, int y);
 	void applyProjectionMatrix(MatrixStack *P) const;
-	void applyViewMatrix(MatrixStack *MV) const;
+	void applyCameraMatrix(MatrixStack *MV) const;
 	
 private:
 	float aspect;

@@ -13,7 +13,7 @@ Camera::Camera() :
 	znear(0.1f),
 	zfar(1000.0f),
 	rotations(0.0, 0.0),
-	translations(0.0f, 0.0f, -10.0f),
+	translations(0.0f, 0.0f, -2.0f),
 	rfactor(0.01f),
 	tfactor(0.005f),
 	sfactor(0.005f)
@@ -30,9 +30,9 @@ void Camera::mouseClicked(int x, int y, bool shift, bool ctrl, bool alt)
 	mousePrev.x = x;
 	mousePrev.y = y;
 	if(shift) {
-		state = Camera::TRANSLATE;
-	} else if(ctrl) {
 		state = Camera::SCALE;
+	} else if(ctrl) {
+		state = Camera::TRANSLATE;
 	} else {
 		state = Camera::ROTATE;
 	}
@@ -51,7 +51,7 @@ void Camera::mouseMoved(int x, int y)
 			translations.y -= tfactor * dv.y;
 			break;
 		case Camera::SCALE:
-			translations.z *= (1.0f - sfactor * dv.y);
+			translations.z *= (1.0f + sfactor * dv.y);
 			break;
 	}
 	mousePrev.x = x;
@@ -63,7 +63,7 @@ void Camera::applyProjectionMatrix(MatrixStack *P) const
 	P->perspective(fovy, aspect, znear, zfar);
 }
 
-void Camera::applyViewMatrix(MatrixStack *MV) const
+void Camera::applyCameraMatrix(MatrixStack *MV) const
 {
 	MV->translate(translations);
 	MV->rotate(rotations.y, glm::vec3(1.0f, 0.0f, 0.0f));

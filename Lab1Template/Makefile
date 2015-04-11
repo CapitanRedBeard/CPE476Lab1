@@ -1,10 +1,10 @@
-osx:
-	g++ -ansi -pedantic -std=c++11 -Wno-deprecated *.cpp -framework GLUT -framework OpenGL
 
+
+osx:
+	g++ -ansi -pedantic -o a3 -Wno-deprecated *.cpp *.cc -framework GLUT -framework OpenGL
 
 all:
-	g++ -ansi -pedantic -std=c++11 -Wno-deprecated *.cpp -DGL_GLEXT_PROTOTYPES -lglut -lGL -lGLU
-
+	g++ -Wno-deprecated *.cpp *.cc -DGL_GLEXT_PROTOTYPES -lglut -lGL -lGLU
 
 clean:
 	rm -f *~ *.o a.out
