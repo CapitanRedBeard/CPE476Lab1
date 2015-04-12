@@ -364,7 +364,9 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("CPE476 Lab1 [ Clark | Harper ]");
 	glutMouseFunc(mouseGL);
-	glutMotionFunc(motionGL);
+	//glutMotionFunc(motionGL);
+	//This function instead will move the mouse without a button being clicked
+	glutPassiveMotionFunc(motionGL);
 	glutKeyboardFunc(keyboardGL);
 	glutReshapeFunc(reshapeGL);
 	glutDisplayFunc(drawGL);

@@ -26,7 +26,7 @@ public:
 private:
 	static const int MAP_X = 100;
 	static const int MAP_Z = 100;
-	static const int MAP_SCALE = 10;
+	static const int MAP_SCALE = 20;
 	float terrain[MAP_X][MAP_Z][3]; // Terrain data
 	GLuint posBufID;
 	GLuint norBufID;

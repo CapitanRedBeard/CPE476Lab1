@@ -48,6 +48,7 @@ void Camera::mouseMoved(int x, int y)
 {
 	glm::vec2 mouseCurr(x, y);
 	glm::vec2 dv = mouseCurr - mousePrev;
+	//printf("Got here");
 	switch(state) {
 		case Camera::ROTATE:
 			rotations += rfactor * dv;
