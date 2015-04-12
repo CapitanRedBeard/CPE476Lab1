@@ -13,6 +13,7 @@
 #include "GLSL.h"
 #include "Camera.h"
 #include "Shape.h"
+#include "Terrain.h"
 #include "MatrixStack.h"
 
 using namespace std;
@@ -20,6 +21,8 @@ using namespace std;
 //Window size
 int g_width = 1024;
 int g_height = 768;
+
+Terrain terrain;
 
 Camera camera;
 bool cull = false;
@@ -131,6 +134,9 @@ void initGL()
 	//
 
 	shape.init();
+
+	//Initialize Terrain
+	terrain.init();
 	
 	
 	//////////////////////////////////////////////////////
@@ -256,6 +262,7 @@ void drawGL()
 
 	// Draw shape
 	shape.draw(h_vertPos, h_vertNor);
+	terrain.draw(h_vertPos, h_vertNor);
 	
 	// Unbind the program
 	glUseProgram(0);
