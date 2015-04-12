@@ -10,8 +10,18 @@
 #include "GLSL.h"
 
 using namespace std;
+float randFloat(float l, float h)
+{
+	float r = rand() / (float)RAND_MAX;
+	return (1.0f - r) * l + r * h;
+}
 
 Shape::Shape() :
+    m(10.0f),
+	x(0.0f, 0.0f, 0.0f),
+	v(0.0f, 0.0f, 0.0f),
+	scale(5.0f),
+	color(1.0f, 1.0f, 1.0f, 1.0f),
 	posBufID(0),
 	norBufID(0),
 	indBufID(0)
@@ -61,6 +71,20 @@ void Shape::load(const string &meshName)
 
 void Shape::init()
 {
+
+	m = 100.0f;
+	x.x = 0.0f;
+	x.y = 0.0f;
+	x.z = 0.0f;
+	v.x = 10.0f;
+	v.y = 0.0f;
+	v.z = 0.0f;
+	scale = 5.0f;
+	color.x = 1.0f;
+	color.y = 1.0f;
+	color.z = 1.0f;
+	color.w = 1.0f;
+
 	// Send the position array to the GPU
 	const vector<float> &posBuf = shapes[0].mesh.positions;
 	glGenBuffers(1, &posBufID);
@@ -118,4 +142,25 @@ void Shape::draw(GLint h_pos, GLint h_nor)
 	GLSL::disableVertexAttribArray(h_pos);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void Shape::update(float t, float h, const glm::vec3 &g, const bool *keyToggles)
+{
+
+
+	glm::vec3 f = m * g;
+
+	
+	if(keyToggles['n']){
+		color.x = 1.0f;
+		color.y = 1.0f;
+		color.z = 1.0f;
+	}else if(keyToggles['t']){
+		color.x = randFloat(0.0f, 1.0f);
+		color.y = randFloat(0.0f, 1.0f);
+		color.z = randFloat(0.0f, 1.0f);
+	}
+	v += (h / m) * f;
+	// v.y= 0.0f;
+	x += h * v;
 }

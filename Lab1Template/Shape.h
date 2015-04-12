@@ -23,12 +23,19 @@ public:
 	void load(const std::string &meshName);
 	void init();
 	void draw(GLint h_pos, GLint h_nor);
+	void update(float t, float h, const glm::vec3 &g, const bool *keyToggles);
 	
 private:
 	std::vector<tinyobj::shape_t> shapes;
 	GLuint posBufID;
 	GLuint norBufID;
 	GLuint indBufID;
+	float m; // mass
+	float d; // viscous damping
+	glm::vec3 x; // position
+	glm::vec3 v; // velocity
+	float scale;
+	glm::vec4 color;
 };
 
 #endif
