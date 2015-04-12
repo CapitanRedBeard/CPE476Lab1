@@ -22,6 +22,9 @@ int g_width = 1024;
 int g_height = 768;
 
 Camera camera;
+bool cull = false;
+bool line = false;
+glm::vec2 mouse;
 Shape shape;
 GLuint pid;
 GLint h_vertPos;
@@ -35,6 +38,17 @@ GLint h_kd;
 GLint h_ks;
 GLint h_s;
 GLint h_option;
+
+bool keyToggles[256] = {false};
+float t = 0.0f;
+float h = 0.1f;
+glm::vec3 location(0.0f,0.0f,0.0f);
+glm::vec3 g(-10.0f, -5.0f, 0.0f);
+
+// Display time to control fps
+float t0_disp = 0.0f;
+float t1_disp = 0.0f;
+float t_disp = 0.0f;
 
 typedef struct{
 	float x;
@@ -56,8 +70,14 @@ Material mat3;
 int matCount = 2;
 float optionS = 0.0f;
 
+
+
 void loadScene(char * filename)
 {
+	t = 0.0f;
+	h = 0.001f;
+	// g = glm::vec3(0.0f, -0.01f, 0.0f);
+
 	shape.load(filename);
 }
 
@@ -172,6 +192,8 @@ void initGL()
 	h_s = GLSL::getUniformLocation(pid, "s");
 	h_option = GLSL::getUniformLocation(pid, "option");
 
+	shape.init();
+
 	// Check GLSL
 	GLSL::checkVersion();
 }
@@ -181,7 +203,7 @@ void reshapeGL(int w, int h)
 	// Set view size
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	// Set camera aspect ratio
-	camera.setAspect((float)w/h);
+	camera.setWindowSize(w, h);
 }
 
 void materialSet(Material mat){
@@ -196,14 +218,24 @@ void drawGL()
 {
 	// Clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	// Enable backface culling
+	if(cull) {
+		glEnable(GL_CULL_FACE);
+	} else {
+		glDisable(GL_CULL_FACE);
+	}
+	if(line) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	} else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 	// Create matrix stacks
 	MatrixStack P, MV;
 	// Apply camera transforms
 	P.pushMatrix();
 	camera.applyProjectionMatrix(&P);
 	MV.pushMatrix();
-	camera.applyCameraMatrix(&MV);
+	camera.applyViewMatrix(&MV);
 	
 	// Bind the program
 	
@@ -222,7 +254,6 @@ void drawGL()
 		materialSet(mat3);
 	}
 
-	
 	// Draw shape
 	shape.draw(h_vertPos, h_vertNor);
 	
@@ -249,17 +280,24 @@ void mouseGL(int button, int state, int x, int y)
 void motionGL(int x, int y)
 {
 	camera.mouseMoved(x, y);
-	// Refresh screen
-	glutPostRedisplay();
+	// // Refresh screen
+	// glutPostRedisplay();
 }
 
 void keyboardGL(unsigned char key, int x, int y)
 {
 	//cout << key << endl;
+	keyToggles[key] = true;
 	switch(key) {
 		case 27:
 			// ESCAPE
 			exit(0);
+			break;
+		case 'c':
+			cull = !cull;
+			break;
+		case 'l':
+			line = !line;
 			break;
 		case 77:
 			// M
@@ -297,21 +335,37 @@ void keyboardGL(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
+
+void idleGL(){
+	t_disp = glutGet(GLUT_ELAPSED_TIME);
+	int dt = t_disp - t0_disp;
+	t += h;
+	// Update every 60Hz
+	if(dt > 1000.0/60.0) {
+		t0_disp = t_disp;
+		camera.update(keyToggles, mouse);
+		glutPostRedisplay();
+		shape.update(t, h, g, keyToggles);
+
+	}
+}
+
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
 	glutInitWindowSize(g_width, g_height);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-	glutCreateWindow("Emmett Harper A3");
+	glutCreateWindow("CPE476 Lab1 [ Clark | Harper ]");
 	glutMouseFunc(mouseGL);
 	glutMotionFunc(motionGL);
 	glutKeyboardFunc(keyboardGL);
 	glutReshapeFunc(reshapeGL);
 	glutDisplayFunc(drawGL);
+	glutIdleFunc(idleGL);
 	if(argc == 2){
 		loadScene(*(argv + 1));
 	}else{
-		fprintf(stderr, "%s\n", "Wrong # arguements");
+		fprintf(stderr, "%s\n", "Wrong # arguements; proper usage: './a3 example.obj'");
 		return 0;
 	}
 	initGL();
