@@ -378,6 +378,7 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshapeGL);
 	glutDisplayFunc(drawGL);
 	glutIdleFunc(idleGL);
+	glutSetCursor(GLUT_CURSOR_NONE); 
 	if(argc == 2){
 		loadScene(*(argv + 1));
 	}else{
