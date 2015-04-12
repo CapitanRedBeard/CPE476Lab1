@@ -17,6 +17,10 @@
 
 using namespace std;
 
+//Window size
+int g_width = 1024;
+int g_height = 768;
+
 Camera camera;
 Shape shape;
 GLuint pid;
@@ -296,7 +300,7 @@ void keyboardGL(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(g_width, g_height);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("Emmett Harper A3");
 	glutMouseFunc(mouseGL);
