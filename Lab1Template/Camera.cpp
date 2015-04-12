@@ -18,10 +18,11 @@ Camera::Camera() :
 	znear(0.1f),
 	zfar(1000.0f),
 	rotations(0.01, 0.01),
-	rfactor(0.0001f),
+	rfactor(0.0005f),
 	pfactor(0.0005f),
 	position(0.0f, 0.0f, 10.0f),
-	sfactor(0.005f)
+	sfactor(0.005f),
+	state(0)
 {
 }
 
@@ -47,22 +48,27 @@ void Camera::mouseClicked(int x, int y, bool shift, bool ctrl, bool alt)
 void Camera::mouseMoved(int x, int y)
 {
 	glm::vec2 mouseCurr(x, y);
-	glm::vec2 dv = mouseCurr - mousePrev;
+	// glm::vec2 dv = mouseCurr - mousePrev;
 	//printf("Got here");
-	switch(state) {
-		case Camera::ROTATE:
-			rotations += rfactor * dv;
-			break;
-		case Camera::TRANSLATE:
-			position.x += pfactor * dv.x;
-			position.y -= pfactor * dv.y;
-			break;
-		case Camera::SCALE:
-			position.z *= (1.0f - sfactor * dv.y);
-			break;
-	}
-	mousePrev.x = x;
-	mousePrev.y = y;
+	// switch(state) {
+	// 	case Camera::ROTATE:
+			// printf("Rotate camera");
+			rotations += rfactor * mouseCurr;
+	// 		break;
+	// 	case Camera::TRANSLATE:
+	// 		printf("Translate camera");
+	// 		position.x += pfactor * dv.x;
+	// 		position.y -= pfactor * dv.y;
+	// 		break;
+	// 	case Camera::SCALE:
+	// 		printf("Scale camera");
+	// 		position.z *= (1.0f - sfactor * dv.y);
+	// 		break;
+	// 	default:
+	// 		printf("No idea whats going on");
+	// }
+	// mousePrev.x = x;
+	// mousePrev.y = y;
 }
 
 void Camera::setWindowSize(float w, float h)
@@ -98,9 +104,7 @@ void Camera::update(const bool *keys, const glm::vec2 &mouse)
 	}
 	rotations.x += rfactor * dx;
 	rotations.y += rfactor * dy;
-
 	// Update camera position and orientation here
-
 	// Save last mouse
 	mousePrev = mouse;
 }

@@ -286,7 +286,14 @@ void mouseGL(int button, int state, int x, int y)
 
 void motionGL(int x, int y)
 {
-	camera.mouseMoved(x, y);
+	float dx = (g_width / 2) - x;
+	float dy = (g_height / 2) - y;
+	printf("DX: %f, DY: %f\n", dx, dy);
+	if((dx > 0.001 || dx < 0.001) && (dy > 0.001 || dy < 0.001)){
+		printf("DX: %f, DY: %f\n", dx, dy);
+		camera.mouseMoved(dx, dy);		
+	}
+	glutWarpPointer(g_width / 2, g_height / 2);
 	// // Refresh screen
 	// glutPostRedisplay();
 }
