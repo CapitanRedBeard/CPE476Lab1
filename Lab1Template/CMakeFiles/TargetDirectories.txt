@@ -1,0 +1,2 @@
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/dependencies/glfw/src/CMakeFiles/glfw.dir
