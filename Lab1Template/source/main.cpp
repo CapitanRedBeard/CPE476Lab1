@@ -18,6 +18,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "RenderingHelper.h"
+#define NUMOBJ 10
 
 using namespace std;
 
@@ -34,8 +35,8 @@ Camera camera;
 bool cull = false;
 bool line = false;
 glm::vec2 mouse;
-Shape shape;
-
+int shapeCount = 1;
+std::vector<Shape> shapes(NUMOBJ);
 //pid used for glUseProgram(pid);
 GLuint pid;
 GLint h_vertPos;
@@ -59,9 +60,9 @@ glm::vec3 location(0.0f,0.0f,0.0f);
 glm::vec3 g(-10.0f, -5.0f, 0.0f);
 
 // Display time to control fps
-float t0_disp = 0.0f;
-float t1_disp = 0.0f;
-float t_disp = 0.0f;
+float timeOldDraw = 0.0f;
+float timeNew = 0.0f;
+float timeOldSpawn = 0.0f;
 
 typedef struct{
 	float x;
@@ -121,7 +122,10 @@ void initShape(char * filename)
 	h = 0.001f;
 	// g = glm::vec3(0.0f, -0.01f, 0.0f);
 
-	shape.load(filename);
+	//Load Shape object
+	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
+		it->load(filename);
+	}
 }
 
 /**
@@ -133,7 +137,9 @@ void initModels()
 	// through each and init each one.
 
 	//Initialize Shape object
-	shape.init();
+	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
+		it->init();
+	}
 
 	//Initialize Terrain object
 	terrain.init();
@@ -232,7 +238,7 @@ void drawGL()
 	camera.update(xpos, ypos);
 
 	// Enable backface culling
-	/*if(cull) {
+	if(cull) {
 		glEnable(GL_CULL_FACE);
 	} else {
 		glDisable(GL_CULL_FACE);
@@ -241,7 +247,7 @@ void drawGL()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	} else {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}*/
+	}
 
 	glUniform3fv(h_lightPos1, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
 	glUniform3fv(h_lightPos2, 1, glm::value_ptr(glm::vec3(-1.0f, 1.0f, 1.0f)));
@@ -280,15 +286,24 @@ void drawGL()
 	//Instead of the above, we use the function SetMaterial.
 	SetMaterial(1);
 
-	// Draw shape
+	// Draw shapes
+	int i = 0;
+	for (std::vector<Shape>::iterator it = shapes.begin(); i < shapeCount; ++it, i++){
+    // std::cout << ' ' << ;
+	// for(int i = 0; i < shapeCount; i++){
+		ModelTrans.loadIdentity();
+		ModelTrans.pushMatrix();
+		ModelTrans.translate(it->getPosition());
+		glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+		ModelTrans.popMatrix();
+		it->draw(h_vertPos, h_vertNor);	
+	}
+
 	ModelTrans.loadIdentity();
 	ModelTrans.pushMatrix();
-		ModelTrans.translate(shape.getPosition());
-		glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
-	ModelTrans.popMatrix();
-	shape.draw(h_vertPos, h_vertNor);
-
+	glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
 	//Still need to set position for terrain.
+	ModelTrans.popMatrix();
 	terrain.draw(h_vertPos, h_vertNor);
 	
 	// Unbind the program
@@ -303,8 +318,16 @@ void drawGL()
  */
 void checkUserInput()
 {
-	vec3 view = camera.getLookAtPoint() - camera.getTheEye();
+   vec3 view = camera.getLookAtPoint() - camera.getTheEye();
    vec3 strafe = glm::cross(view, vec3(0.0, 1.0, 0.0));
+   if (glfwGetKey(window, GLFW_KEY_C ) == GLFW_PRESS)
+   {
+      cull = !cull;
+   }
+   if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+   {
+      line = !line;
+   }
    if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS)
    {
       //theStrafe -= strafe * strafeSpeed;
@@ -349,12 +372,12 @@ void motionGL(int x, int y)
 }
 
 /*void idleGL(){
-	t_disp = glutGet(GLUT_ELAPSED_TIME);
-	int dt = t_disp - t0_disp;
+	timeNew = glutGet(GLUT_ELAPSED_TIME);
+	int dt = timeNew - timeOldDraw;
 	t += h;
 	// Update every 60Hz
 	if(dt > 1000.0/60.0) {
-		t0_disp = t_disp;
+		timeOldDraw = timeNew;
 		camera.update(keyToggles, mouse);
 		//glutPostRedisplay();
 		shape.update(t, h, g, keyToggles);
@@ -408,8 +431,8 @@ int main(int argc, char **argv)
   	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   	glfwSetCursorPos(window, 0.0, 0.0);
 
-   glEnable (GL_BLEND);
-   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	initGL();
 	installShaders("lab7_vert.glsl", "lab7_frag.glsl");
@@ -419,13 +442,29 @@ int main(int argc, char **argv)
    do{
    	//maybe we should have the time step in here
 
+   	timeNew = glfwGetTime();
+	double dtSpawn = timeNew - timeOldSpawn;
+
+	printf("shapeCount: %f", dtSpawn);
+	// Update every 1s
+	if(shapeCount != NUMOBJ && dtSpawn >= timeOldSpawn) {
+		shapeCount++;
+		timeOldDraw += 1.0;
+	}
+
    	//Check for user input
    	checkUserInput();
-   	//Draw an image
-   	drawGL();
-      // Swap buffers
-      glfwSwapBuffers(window);
-      glfwPollEvents();
+	double dtDraw = timeNew - timeOldDraw;
+	t += h;
+	// Update every 60Hz
+	if(dtDraw >= (1.0 / 60) ) {
+		timeOldDraw += (1.0 / 60);
+		//Draw an image
+		drawGL();
+	}
+	// Swap buffers
+	glfwSwapBuffers(window);
+	glfwPollEvents();
 
    } // Check if the ESC key was pressed or the window was closed
    while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

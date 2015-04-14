@@ -2,13 +2,17 @@
 // sueda
 // October, 2014
 //
-
 #pragma once
 #ifndef _SHAPE_H_
 #define _SHAPE_H_
-
+#define xBoundMax 50
+#define xBoundMin 0
+#define zBoundMax 0
+#define zBoundMin -50
 #include "GLSL.h"
 #include "tiny_obj_loader.h"
+
+
 
 class Shape
 {
@@ -26,8 +30,6 @@ private:
 	GLuint posBufID;
 	GLuint norBufID;
 	GLuint indBufID;
-	float m; // mass
-	float d; // viscous damping
 	glm::vec3 x; // position
 	glm::vec3 v; // velocity
 	float scale;

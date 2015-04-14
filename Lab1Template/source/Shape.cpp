@@ -17,8 +17,7 @@ float randFloat(float l, float h)
 }
 
 Shape::Shape() :
-    m(10.0f),
-	x(0.0f, 0.0f, 0.0f),
+	x(0.0f, 0.5f, 0.0f),
 	v(0.0f, 0.0f, 0.0f),
 	scale(5.0f),
 	color(1.0f, 1.0f, 1.0f, 1.0f),
@@ -35,7 +34,8 @@ Shape::~Shape()
 glm::vec3 Shape::getPosition()
 {
 	//Hard coded for now until we get things moving.
-	return glm::vec3(0.0, 0.0, -5.0);
+	return x;
+	// return glm::vec3(0.0, 0.0, -5.0);
 }
 
 void Shape::load(const string &meshName)
@@ -77,14 +77,16 @@ void Shape::load(const string &meshName)
 
 void Shape::init()
 {
-
-	m = 100.0f;
-	x.x = 0.0f;
-	x.y = 0.0f;
-	x.z = 0.0f;
-	v.x = 10.0f;
+	// x.x = 0.0f;
+	x.x = randFloat(1.0f, 9.0f);
+	x.y = 0.5f;
+	// x.z = 0.0f;
+	x.z = randFloat(-1.0f, -9.0f);
+	// v.x = 0.1f;
+	v.x = randFloat(0.1f, 0.9f);
 	v.y = 0.0f;
-	v.z = 0.0f;
+	// v.z = -0.1f;
+	v.z = randFloat(-0.1f, -0.9f);
 	scale = 5.0f;
 	color.x = 1.0f;
 	color.y = 1.0f;
@@ -122,6 +124,15 @@ void Shape::init()
 
 void Shape::draw(GLint h_pos, GLint h_nor)
 {
+	x.z += v.z;
+	x.x += v.x;
+	if(x.x > xBoundMax || x.x < xBoundMin)
+		v.x = 0 - v.x;
+	if(x.z > zBoundMax || x.z < zBoundMin)
+		v.z = 0 - v.z;
+	
+	// printf("X.(x:%f,y:%f,z:%f) V.(x:%f,y:%f,z:%f)", x.x, x.y, x.z, v.x, v.y, v.z);
+
 	// Enable and bind position array for drawing
 	GLSL::enableVertexAttribArray(h_pos);
 	glBindBuffer(GL_ARRAY_BUFFER, posBufID);
@@ -152,21 +163,16 @@ void Shape::draw(GLint h_pos, GLint h_nor)
 
 void Shape::update(float t, float h, const glm::vec3 &g, const bool *keyToggles)
 {
-
-
-	glm::vec3 f = m * g;
-
 	
-	if(keyToggles['n']){
-		color.x = 1.0f;
-		color.y = 1.0f;
-		color.z = 1.0f;
-	}else if(keyToggles['t']){
-		color.x = randFloat(0.0f, 1.0f);
-		color.y = randFloat(0.0f, 1.0f);
-		color.z = randFloat(0.0f, 1.0f);
-	}
-	v += (h / m) * f;
+	// if(keyToggles['n']){
+	// 	color.x = 1.0f;
+	// 	color.y = 1.0f;
+	// 	color.z = 1.0f;
+	// }else if(keyToggles['t']){
+	// 	color.x = randFloat(0.0f, 1.0f);
+	// 	color.y = randFloat(0.0f, 1.0f);
+	// 	color.z = randFloat(0.0f, 1.0f);
+	// }
 	// v.y= 0.0f;
-	x += h * v;
+	
 }
