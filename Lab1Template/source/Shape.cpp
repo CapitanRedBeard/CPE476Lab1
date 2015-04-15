@@ -95,13 +95,13 @@ void Shape::load(const string &meshName)
 	}
 }
 
-void Shape::init()
+void Shape::init(float xR, float zR)
 {
 	// x.x = 0.0f;
-	x.x = randFloat(1.0f, 49.0f);
+	x.x = xR;
 	x.y = 0.5f;
 	// x.z = 0.0f;
-	x.z = randFloat(-1.0f, -49.0f);
+	x.z = zR;
 	// v.x = 0.1f;
 	v.x = randFloat(0.1f, 0.9f) * 0.2;
 	v.y = 0.0f;

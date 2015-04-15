@@ -150,10 +150,10 @@ void initShape(char * filename)
  * Generalized approach to intialization.
  */
 
-void spinOffNewShape(char * filename){
+void spinOffNewShape(char * filename, float x, float z){
 	Shape temp;
 	temp.load(filename);
-	temp.init();
+	temp.init(x, z);
 	shapes.push_back(temp);
 }
 
@@ -524,18 +524,19 @@ int main(int argc, char **argv)
 
 	// Update every 1s
 	if(shapes.size() != NUMOBJ && dtSpawn >= timeOldSpawn) {
-		float randomX = rF(1.0f, 49.0f);
-		float randomZ = rF(-1.0f, -49.0f);
+		float randomX = rF(10.0f, 40.0f);
+		float randomZ = rF(-10.0f, -40.0f);
 		for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
 			glm::vec3 temp = it->getPosition();
 			if((temp.x < randomX + 1 && temp.x > randomX - 1) || 
 				(temp.z < randomZ + 1 && temp.z > randomZ - 1)){
-				randomX = rF(1.0f, 9.0f);
-				randomZ = rF(-1.0f, -9.0f);
+				randomX = rF(10.0f, 40.0f);
+				randomZ = rF(-10.0f, -40.0f);
 				it = shapes.begin();
 			}
 		}
-		spinOffNewShape(&str[0u]);
+
+		spinOffNewShape(&str[0u], randomX, randomZ);
 		timeOldSpawn += 1.0;
 	}
 	
