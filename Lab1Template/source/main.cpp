@@ -447,30 +447,29 @@ int main(int argc, char **argv)
 	// initShape(&str[0u]); //initShape(argv[0]);
   	initModels();
    do{
-   	//maybe we should have the time step in here
-
    	timeNew = glfwGetTime();
-	double dtSpawn = timeNew - timeOldSpawn;
+   	printf("%lf\n", timeNew);
+		double dtSpawn = timeNew - timeOldSpawn;
 
 	// Update every 1s
 	if(shapeCount != NUMOBJ && dtSpawn >= timeOldSpawn) {
 		spinOffNewShape(&str[0u]);
 		timeOldSpawn += 1.0;
 	}
-
+	
    	//Check for user input
    	checkUserInput();
-	double dtDraw = timeNew - timeOldDraw;
-	t += h;
-	// Update every 60Hz
-	if(dtDraw >= (1.0 / 60) ) {
-		timeOldDraw += (1.0 / 60);
-		//Draw an image
-		drawGL();
-	}
-	// Swap buffers
-	glfwSwapBuffers(window);
-	glfwPollEvents();
+		double dtDraw = timeNew - timeOldDraw;
+		t += h;
+		// Update every 60Hz
+		if(dtDraw >= (1.0 / 60) ) {
+			timeOldDraw += (1.0 / 60);
+			//Draw an image
+			drawGL();
+		}
+		// Swap buffers
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
    } // Check if the ESC key was pressed or the window was closed
    while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

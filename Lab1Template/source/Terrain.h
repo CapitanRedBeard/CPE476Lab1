@@ -19,9 +19,9 @@ public:
 	void draw(GLint h_pos, GLint h_nor);
 	
 private:
-	static const int MAP_X = 100;
-	static const int MAP_Z = 100;
-	static const int MAP_SCALE = 20;
+	static const int MAP_X = 50;
+	static const int MAP_Z = 50;
+	static const int MAP_SCALE = 1;
 	float terrain[MAP_X][MAP_Z][3]; // Terrain data
 	GLuint posBufID;
 	GLuint norBufID;
