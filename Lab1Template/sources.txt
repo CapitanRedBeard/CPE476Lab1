@@ -9,6 +9,7 @@ set(HEADERS
    Program.h
    Shape.h
    Terrain.h
+   TextureLoader.h
 )
 
 # List all .c / .cpp files here
@@ -22,4 +23,5 @@ set(SOURCES
    Program.cpp
    Shape.cpp
    Terrain.cpp
+   TextureLoader.cpp
 )

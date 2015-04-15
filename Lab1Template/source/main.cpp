@@ -30,6 +30,8 @@ int g_width;
 int g_height;
 
 Terrain terrain;
+//Plane toggle for coloring
+GLint terrainToggleID;
 
 Camera camera;
 bool cull = false;
@@ -41,6 +43,9 @@ std::vector<Shape> shapes;
 GLuint pid;
 GLint h_vertPos;
 GLint h_vertNor;
+GLint h_aTexCoord;
+//Handles to the shader data
+GLint h_uTexUnit;
 GLint h_ProjMatrix;
 GLint h_ViewMatrix;
 GLint h_ModelMatrix;
@@ -163,6 +168,13 @@ void initGL()
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	// Enable z-buffer test
 	glEnable(GL_DEPTH_TEST);
+
+	/* texture specific settings */
+    glEnable(GL_TEXTURE_2D);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
 /**
@@ -214,9 +226,12 @@ bool installShaders(const string &vShaderName, const string &fShaderName)
 	
 	h_vertPos = GLSL::getAttribLocation(pid, "vertPos");
 	h_vertNor = GLSL::getAttribLocation(pid, "vertNor");
+	h_aTexCoord = GLSL::getAttribLocation(pid, "aTexCoord");
 	h_ProjMatrix = GLSL::getUniformLocation(pid, "uProjMatrix");
 	h_ViewMatrix = GLSL::getUniformLocation(pid, "uViewMatrix");
 	h_ModelMatrix = GLSL::getUniformLocation(pid, "uModelMatrix");
+
+	h_uTexUnit = GLSL::getUniformLocation(pid, "uTexUnit");
 
 	h_lightPos1 = GLSL::getUniformLocation(pid, "lightPos1");
 	h_lightPos2 = GLSL::getUniformLocation(pid, "lightPos2");
@@ -225,6 +240,9 @@ bool installShaders(const string &vShaderName, const string &fShaderName)
 	h_ks = GLSL::getUniformLocation(pid, "ks");
 	h_s = GLSL::getUniformLocation(pid, "s");
 	h_option = GLSL::getUniformLocation(pid, "option");
+
+	/*Toggle for plane coloring*/
+    terrainToggleID = GLSL::getUniformLocation(pid, "terrainToggle");
 
 	// Check GLSL
 	GLSL::checkVersion();
@@ -310,7 +328,11 @@ void drawGL()
 	glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
 	//Still need to set position for terrain.
 	ModelTrans.popMatrix();
-	terrain.draw(h_vertPos, h_vertNor);
+
+	glUniform1i(terrainToggleID, 1);
+	glUniform1i(h_uTexUnit, 0);
+	terrain.draw(h_vertPos, h_vertNor, h_aTexCoord);
+	glUniform1i(terrainToggleID, 0);
 	
 	// Unbind the program
 	glUseProgram(0);

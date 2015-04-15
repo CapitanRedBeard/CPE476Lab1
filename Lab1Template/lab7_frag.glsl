@@ -1,3 +1,7 @@
+//Texture
+uniform sampler2D uTexUnit;
+varying vec2 vTexCoord;
+
 uniform vec3 lightPos1;
 uniform vec3 lightPos2;
 uniform vec3 ka;
@@ -5,6 +9,9 @@ uniform vec3 kd;
 uniform vec3 ks;
 uniform float s;
 uniform float option;
+
+//Switch toggle for coloring
+uniform int terrainToggle;
 
 varying vec3 color; // passed from the vertex shader
 varying vec4 pos;
@@ -24,5 +31,15 @@ void main()
 	intensity = 0.2;
 	light2 = (ka + (kd * max(dot(l2,n), 0.0)) + (ks * pow(max(dot(h2,n), 0.0), s))) * intensity;
 	color = light1 + light2;
-	gl_FragColor = vec4(color.r, color.g, color.b, 1.0);
+
+
+	if (terrainToggle == 1)
+	{
+		vec4 texColor1 = texture2D(uTexUnit, vTexCoord);
+		gl_FragColor = texColor1 * 2.0 * vec4(color.r, color.g, color.b, 1.0);
+	}
+	else
+	{
+		gl_FragColor = vec4(color.r, color.g, color.b, 1.0);
+	}
 }

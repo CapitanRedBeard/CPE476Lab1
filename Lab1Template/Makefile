@@ -320,6 +320,30 @@ source/Terrain.cpp.s:
 	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/Terrain.cpp.s
 .PHONY : source/Terrain.cpp.s
 
+source/TextureLoader.o: source/TextureLoader.cpp.o
+.PHONY : source/TextureLoader.o
+
+# target to build an object file
+source/TextureLoader.cpp.o:
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/TextureLoader.cpp.o
+.PHONY : source/TextureLoader.cpp.o
+
+source/TextureLoader.i: source/TextureLoader.cpp.i
+.PHONY : source/TextureLoader.i
+
+# target to preprocess a source file
+source/TextureLoader.cpp.i:
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/TextureLoader.cpp.i
+.PHONY : source/TextureLoader.cpp.i
+
+source/TextureLoader.s: source/TextureLoader.cpp.s
+.PHONY : source/TextureLoader.s
+
+# target to generate assembly for a file
+source/TextureLoader.cpp.s:
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/TextureLoader.cpp.s
+.PHONY : source/TextureLoader.cpp.s
+
 source/main.o: source/main.cpp.o
 .PHONY : source/main.o
 
@@ -402,6 +426,9 @@ help:
 	@echo "... source/Terrain.o"
 	@echo "... source/Terrain.i"
 	@echo "... source/Terrain.s"
+	@echo "... source/TextureLoader.o"
+	@echo "... source/TextureLoader.i"
+	@echo "... source/TextureLoader.s"
 	@echo "... source/main.o"
 	@echo "... source/main.i"
 	@echo "... source/main.s"

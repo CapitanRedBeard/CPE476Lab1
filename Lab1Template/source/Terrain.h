@@ -16,7 +16,7 @@ public:
 	Terrain();
 	virtual ~Terrain();
 	void init();
-	void draw(GLint h_pos, GLint h_nor);
+	void draw(GLint h_pos, GLint h_nor, GLint h_aTexCoord);
 	
 private:
 	static const int MAP_X = 50;

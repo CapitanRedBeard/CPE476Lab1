@@ -131,12 +131,28 @@ Terrain.h
 /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/Terrain.h
 GLSL.h
 /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/GLSL.h
+TextureLoader.h
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.h
 
 /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/Terrain.h
 GLSL.h
 /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/GLSL.h
 tiny_obj_loader.h
 /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/tiny_obj_loader.h
+
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.cpp
+iostream
+-
+glm/glm.hpp
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/glm/glm.hpp
+TextureLoader.h
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.h
+GLSL.h
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/GLSL.h
+
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.h
+GLSL.h
+/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/GLSL.h
 
 /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/glm/glm.hpp
 detail/_fixes.hpp

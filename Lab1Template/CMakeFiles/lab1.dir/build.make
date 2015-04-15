@@ -256,9 +256,32 @@ CMakeFiles/lab1.dir/source/Terrain.cpp.o.provides: CMakeFiles/lab1.dir/source/Te
 
 CMakeFiles/lab1.dir/source/Terrain.cpp.o.provides.build: CMakeFiles/lab1.dir/source/Terrain.cpp.o
 
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: CMakeFiles/lab1.dir/flags.make
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/TextureLoader.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles $(CMAKE_PROGRESS_10)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/lab1.dir/source/TextureLoader.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/lab1.dir/source/TextureLoader.cpp.o -c /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.cpp
+
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lab1.dir/source/TextureLoader.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.cpp > CMakeFiles/lab1.dir/source/TextureLoader.cpp.i
+
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lab1.dir/source/TextureLoader.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.cpp -o CMakeFiles/lab1.dir/source/TextureLoader.cpp.s
+
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.requires:
+.PHONY : CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.requires
+
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.provides: CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.requires
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.provides.build
+.PHONY : CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.provides
+
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.provides.build: CMakeFiles/lab1.dir/source/TextureLoader.cpp.o
+
 CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o: CMakeFiles/lab1.dir/flags.make
 CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o: dependencies/glad/src/glad.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o   -c /Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/dependencies/glad/src/glad.c
 
@@ -290,6 +313,7 @@ lab1_OBJECTS = \
 "CMakeFiles/lab1.dir/source/Program.cpp.o" \
 "CMakeFiles/lab1.dir/source/Shape.cpp.o" \
 "CMakeFiles/lab1.dir/source/Terrain.cpp.o" \
+"CMakeFiles/lab1.dir/source/TextureLoader.cpp.o" \
 "CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o"
 
 # External object files for target lab1
@@ -304,6 +328,7 @@ lab1: CMakeFiles/lab1.dir/source/MatrixStack.cpp.o
 lab1: CMakeFiles/lab1.dir/source/Program.cpp.o
 lab1: CMakeFiles/lab1.dir/source/Shape.cpp.o
 lab1: CMakeFiles/lab1.dir/source/Terrain.cpp.o
+lab1: CMakeFiles/lab1.dir/source/TextureLoader.cpp.o
 lab1: CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o
 lab1: CMakeFiles/lab1.dir/build.make
 lab1: dependencies/glfw/src/libglfw3.a
@@ -324,6 +349,7 @@ CMakeFiles/lab1.dir/requires: CMakeFiles/lab1.dir/source/MatrixStack.cpp.o.requi
 CMakeFiles/lab1.dir/requires: CMakeFiles/lab1.dir/source/Program.cpp.o.requires
 CMakeFiles/lab1.dir/requires: CMakeFiles/lab1.dir/source/Shape.cpp.o.requires
 CMakeFiles/lab1.dir/requires: CMakeFiles/lab1.dir/source/Terrain.cpp.o.requires
+CMakeFiles/lab1.dir/requires: CMakeFiles/lab1.dir/source/TextureLoader.cpp.o.requires
 CMakeFiles/lab1.dir/requires: CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o.requires
 .PHONY : CMakeFiles/lab1.dir/requires
 

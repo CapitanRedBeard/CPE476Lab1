@@ -8,8 +8,12 @@
 #include "glm/glm.hpp"
 #include "Terrain.h"
 #include "GLSL.h"
+#include "TextureLoader.h"
 
 using namespace std;
+
+int TERRAIN_TEX_ID = 100;
+TextureLoader texLoader;
 
 Terrain::Terrain() :
 	x(0.0f, 0.0f, 0.0f),
@@ -133,14 +137,25 @@ void Terrain::init()
   	glBindBuffer(GL_ARRAY_BUFFER, texBufID);
   	glBufferData(GL_ARRAY_BUFFER, sizeof(terrain_tex), terrain_tex, GL_STATIC_DRAW);
 
+    //Load Texture
+    texLoader.LoadTexture((char *)"assets/green.bmp", TERRAIN_TEX_ID);
+
   	//unbind the arrays
   	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 	assert(glGetError() == GL_NO_ERROR);
 }
 
-void Terrain::draw(GLint h_pos, GLint h_nor)
+void Terrain::draw(GLint h_pos, GLint h_nor, GLint h_aTexCoord)
 {
+  //set up the texture unit
+    glEnable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE0);
+
+    //glUniform1i(h_uTexUnit, 0);
+
+    glBindTexture(GL_TEXTURE_2D, TERRAIN_TEX_ID);
+
 	// Enable and bind normal array for drawing
    GLSL::enableVertexAttribArray(h_nor);
    glBindBuffer(GL_ARRAY_BUFFER, norBufID);
@@ -150,9 +165,9 @@ void Terrain::draw(GLint h_pos, GLint h_nor)
    glBindBuffer(GL_ARRAY_BUFFER, posBufID);
    glVertexAttribPointer(h_pos, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-   /*GLSL::enableVertexAttribArray(h_aTexCoord);
-   glBindBuffer(GL_ARRAY_BUFFER, terrainTexBufObj);
-   glVertexAttribPointer(h_aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);*/
+   GLSL::enableVertexAttribArray(h_aTexCoord);
+   glBindBuffer(GL_ARRAY_BUFFER, texBufID);
+   glVertexAttribPointer(h_aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
    int size = 0;
    for (int index = 0; index < MAP_X - 1; index++)
@@ -163,8 +178,7 @@ void Terrain::draw(GLint h_pos, GLint h_nor)
 
    GLSL::disableVertexAttribArray(h_pos);
    GLSL::disableVertexAttribArray(h_nor);
-   //GLSL::disableVertexAttribArray(h_aTexCoord);
+   GLSL::disableVertexAttribArray(h_aTexCoord);
    glBindBuffer(GL_ARRAY_BUFFER, 0);
-   //glDisable(GL_TEXTURE_2D);
-   //glUniform1i(planeToggleID, 0);
+   glDisable(GL_TEXTURE_2D);
 }

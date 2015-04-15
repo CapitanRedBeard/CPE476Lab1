@@ -82,8 +82,14 @@ CMakeFiles/lab1.dir/source/Shape.cpp.o: source/tiny_obj_loader.h
 CMakeFiles/lab1.dir/source/Terrain.cpp.o: source/GLSL.h
 CMakeFiles/lab1.dir/source/Terrain.cpp.o: source/Terrain.cpp
 CMakeFiles/lab1.dir/source/Terrain.cpp.o: source/Terrain.h
+CMakeFiles/lab1.dir/source/Terrain.cpp.o: source/TextureLoader.h
 CMakeFiles/lab1.dir/source/Terrain.cpp.o: source/glm/glm.hpp
 CMakeFiles/lab1.dir/source/Terrain.cpp.o: source/tiny_obj_loader.h
+
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/GLSL.h
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/TextureLoader.cpp
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/TextureLoader.h
+CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/glm/glm.hpp
 
 CMakeFiles/lab1.dir/source/main.cpp.o: source/Camera.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/GLSL.h
