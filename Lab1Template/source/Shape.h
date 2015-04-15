@@ -5,10 +5,10 @@
 #pragma once
 #ifndef _SHAPE_H_
 #define _SHAPE_H_
-#define xBoundMax 50
-#define xBoundMin 0
-#define zBoundMax 0
-#define zBoundMin -50
+#define xBoundMax 48.5
+#define xBoundMin 0.5
+#define zBoundMax -0.5
+#define zBoundMin -48.5
 #include "GLSL.h"
 #include "tiny_obj_loader.h"
 

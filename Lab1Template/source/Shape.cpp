@@ -91,10 +91,10 @@ void Shape::init()
 	// x.z = 0.0f;
 	x.z = randFloat(-1.0f, -9.0f);
 	// v.x = 0.1f;
-	v.x = randFloat(0.1f, 0.9f);
+	v.x = randFloat(0.1f, 0.9f) * 0.2;
 	v.y = 0.0f;
 	// v.z = -0.1f;
-	v.z = randFloat(-0.1f, -0.9f);
+	v.z = randFloat(-0.1f, -0.9f) * 0.2;
 	scale = 5.0f;
 	color.x = 1.0f;
 	color.y = 0.0f;
