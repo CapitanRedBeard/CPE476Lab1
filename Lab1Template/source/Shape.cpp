@@ -19,8 +19,8 @@ float randFloat(float l, float h)
 Shape::Shape() :
 	x(0.0f, 0.5f, 0.0f),
 	v(0.0f, 0.0f, 0.0f),
-	scale(5.0f),
-	color(1.0f, 1.0f, 1.0f, 1.0f),
+	scale(1.0f),
+	color(false),
 	posBufID(0),
 	norBufID(0),
 	indBufID(0)
@@ -31,12 +31,21 @@ Shape::~Shape()
 {
 }
 
+float Shape::getRadius(){
+	return scale / 2;
+}
 
 void Shape::setColorGreen()
 {
-	color.x = 0.0f;
-	color.y = 1.0f;
-	color.z = 0.0f;
+	v.x *= 0.2;
+	v.z *= 0.2;
+	color = true;
+}
+
+
+bool Shape::isGreen()
+{
+	return color;
 }
 
 glm::vec3 Shape::getPosition()
@@ -86,20 +95,17 @@ void Shape::load(const string &meshName)
 void Shape::init()
 {
 	// x.x = 0.0f;
-	x.x = randFloat(1.0f, 9.0f);
+	x.x = randFloat(1.0f, 49.0f);
 	x.y = 0.5f;
 	// x.z = 0.0f;
-	x.z = randFloat(-1.0f, -9.0f);
+	x.z = randFloat(-1.0f, -49.0f);
 	// v.x = 0.1f;
 	v.x = randFloat(0.1f, 0.9f) * 0.2;
 	v.y = 0.0f;
 	// v.z = -0.1f;
 	v.z = randFloat(-0.1f, -0.9f) * 0.2;
-	scale = 5.0f;
-	color.x = 1.0f;
-	color.y = 0.0f;
-	color.z = 0.0f;
-	color.w = 1.0f;
+	scale = 1.0f;
+	color = false;
 
 	// Send the position array to the GPU
 	const vector<float> &posBuf = shapes[0].mesh.positions;
@@ -117,6 +123,7 @@ void Shape::init()
 		norBufID = 0;
 	}
 	
+
 	// Send the index array to the GPU
 	const vector<unsigned int> &indBuf = shapes[0].mesh.indices;
 	glGenBuffers(1, &indBufID);

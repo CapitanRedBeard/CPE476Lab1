@@ -26,6 +26,13 @@ using namespace std;
 
 void idleGL();
 
+
+float rF(float l, float h)
+{
+	float r = rand() / (float)RAND_MAX;
+	return (1.0f - r) * l + r * h;
+}
+
 TextureLoader texLoader;
 
 //The Window & window size
@@ -101,23 +108,23 @@ void SetMaterial(int i)
 {
 	glUseProgram(pid);
 	switch(i) {
-		case 0: //Material 1
-			glUniform3f(h_ka, 0.0, 0.05, 0.75);
-			glUniform3f(h_kd, 0.2, 0.2, 0.2);
-			glUniform3f(h_ks, 0.3, 1.0, 0.3);
-			glUniform1f(h_s, 200.0);
-			break;
-		case 1: //Material 2
-			glUniform3f(h_ka, 0.15, 0.15, 0.3);
-			glUniform3f(h_kd, 0.3, 0.5, 0.5);
+		case 0: //Red Default
+			glUniform3f(h_ka, 0.15, 0.15, 0.15);
+			glUniform3f(h_kd, 0.8, 0.2, 0.2);
 			glUniform3f(h_ks, 0.2, 0.2, 0.2);
 			glUniform1f(h_s, 50.0);
 			break;
-		case 2: //Material 3
-			glUniform3f(h_ka, 0.2, 0.2, 0.2);
-			glUniform3f(h_kd, 0.8, 0.7, 0.7);
-			glUniform3f(h_ks, 1.0, 0.9, 0.8);
-			glUniform1f(h_s, 200.0);
+		case 1: //Green
+			glUniform3f(h_ka, 0.15, 0.15, 0.15);
+			glUniform3f(h_kd, 0.2, 0.8, 0.2);
+			glUniform3f(h_ks, 0.2, 0.2, 0.2);
+			glUniform1f(h_s, 50.0);
+			break;
+		case 2: //Default light
+			glUniform3f(h_ka, 0.15, 0.15, 0.15);
+			glUniform3f(h_kd, 0.3, 0.3, 0.3);
+			glUniform3f(h_ks, 0.2, 0.2, 0.2);
+			glUniform1f(h_s, 50.0);
 			break;
 	}
 }
@@ -355,12 +362,15 @@ void drawGL()
 		materialSet(material3);
 	}*/
 	//Instead of the above, we use the function SetMaterial.
-	SetMaterial(1);
 
 	// Draw shapes
 	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
     // std::cout << ' ' << ;
 	// for(int i = 0; i < shapeCount; i++){
+		if(it->isGreen())
+			SetMaterial(1);
+		else
+			SetMaterial(0);
 		ModelTrans.loadIdentity();
 		ModelTrans.pushMatrix();
 		ModelTrans.translate(it->getPosition());
@@ -369,6 +379,7 @@ void drawGL()
 		it->draw(h_vertPos, h_vertNor);	
 	}
 
+	SetMaterial(2);
 	ModelTrans.loadIdentity();
 	ModelTrans.pushMatrix();
 	glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
@@ -443,6 +454,22 @@ void window_size_callback(GLFWwindow* window, int w, int h){
 	camera.setWindowSize(w, h);
 }
 
+void checkCollisions(){
+	for (std::vector<Shape>::iterator it1 = shapes.begin(); it1 != shapes.end(); ++it1){
+		glm::vec3 pos1 = it1->getPosition();
+		for (std::vector<Shape>::iterator it2 = shapes.begin(); it2 != shapes.end(); ++it2){
+			glm::vec3 pos2 = it2->getPosition();
+			float d = sqrt(((pos1.x - pos2.x) * (pos1.x - pos2.x)) + ((pos1.z - pos2.z) * (pos1.z - pos2.z)));
+			int index1 = std::distance(shapes.begin(), it1);
+			int index2 = std::distance(shapes.begin(), it2);
+			if(index1 != index2 && d <= it1->getRadius() + it2->getRadius()){
+				it1->setColorGreen();
+				it2->setColorGreen();
+			}
+		}
+	}
+}
+
 int main(int argc, char **argv)
 {
 	// Initialise GLFW
@@ -493,11 +520,21 @@ int main(int argc, char **argv)
   	initModels();
    do{
    	timeNew = glfwGetTime();
-   	printf("%lf\n", timeNew);
-		double dtSpawn = timeNew - timeOldSpawn;
+	double dtSpawn = timeNew - timeOldSpawn;
 
 	// Update every 1s
-	if(shapeCount != NUMOBJ && dtSpawn >= timeOldSpawn) {
+	if(shapes.size() != NUMOBJ && dtSpawn >= timeOldSpawn) {
+		float randomX = rF(1.0f, 49.0f);
+		float randomZ = rF(-1.0f, -49.0f);
+		for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
+			glm::vec3 temp = it->getPosition();
+			if((temp.x < randomX + 1 && temp.x > randomX - 1) || 
+				(temp.z < randomZ + 1 && temp.z > randomZ - 1)){
+				randomX = rF(1.0f, 9.0f);
+				randomZ = rF(-1.0f, -9.0f);
+				it = shapes.begin();
+			}
+		}
 		spinOffNewShape(&str[0u]);
 		timeOldSpawn += 1.0;
 	}
@@ -508,6 +545,7 @@ int main(int argc, char **argv)
 		t += h;
 		// Update every 60Hz
 		if(dtDraw >= (1.0 / 60) ) {
+			checkCollisions();
 			timeOldDraw += (1.0 / 60);
 			//Draw an image
 			drawGL();

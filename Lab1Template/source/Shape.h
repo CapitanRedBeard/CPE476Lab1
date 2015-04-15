@@ -25,6 +25,8 @@ public:
 	void update(float t, float h, const glm::vec3 &g, const bool *keyToggles);
 	glm::vec3 getPosition();
 	void setColorGreen();
+	float getRadius();
+	bool isGreen();
 	
 private:
 	std::vector<tinyobj::shape_t> shapes;
@@ -34,7 +36,7 @@ private:
 	glm::vec3 x; // position
 	glm::vec3 v; // velocity
 	float scale;
-	glm::vec4 color;
+	bool color;
 };
 
 #endif
