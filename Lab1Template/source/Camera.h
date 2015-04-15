@@ -9,6 +9,10 @@
 
 #define GLM_FORCE_RADIANS
 #include "glm/glm.hpp"
+#define xBoundMax 48.5
+#define xBoundMin 0.5
+#define zBoundMax -0.5
+#define zBoundMin -48.5
 
 class MatrixStack;
 

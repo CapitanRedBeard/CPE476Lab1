@@ -41,8 +41,8 @@ Camera::Camera() :
 	//Brandon Stuff
 	lookAtPoint(0.0f, 0.0f, 0.0f),
 	theEye(0.0f, 0.0f, 0.0f),
-	theStrafe(25.0f, 1.0f, 0.0f),
-	theZoom(0.0f, 0.0f, -25.0f)
+	theStrafe(25.0f, 0.5f, 0.0f),
+	theZoom(0.0f, 0.5f, -25.0f)
 {
 }
 
@@ -66,9 +66,16 @@ void Camera::updateStrafe(glm::vec3 dStrafe)
 	//free camera
 	//theStrafe += dStrafe;
 
+	//if(x.x > xBoundMax || x.x < xBoundMin)
+		//v.x = 0 - v.x;
+	//if(x.z > zBoundMax || x.z < zBoundMin)
+		//v.z = 0 - v.z;
+
 	//The locked on y
-	theStrafe.x += dStrafe.x;
-	theStrafe.z += dStrafe.z;
+	if(theStrafe.x + theZoom.x + dStrafe.x < xBoundMax && theStrafe.x + theZoom.x + dStrafe.x > xBoundMin)
+		theStrafe.x += dStrafe.x;
+	if(theStrafe.z + theZoom.z + dStrafe.z < zBoundMax && theStrafe.z + theZoom.z + dStrafe.z > zBoundMin)
+		theStrafe.z += dStrafe.z;
 }
 
 void Camera::updateZoom(glm::vec3 dZoom)
@@ -77,8 +84,10 @@ void Camera::updateZoom(glm::vec3 dZoom)
 	//theZoom += dZoom;
 
 	//The locked on y 
-	theZoom.x += dZoom.x;
-	theZoom.z += dZoom.z;
+	if(theZoom.x + theStrafe.x + dZoom.x < xBoundMax && theZoom.x + theStrafe.x + dZoom.x > xBoundMin)
+		theZoom.x += dZoom.x;
+	if(theZoom.z + theStrafe.z + dZoom.z < zBoundMax && theZoom.z + theStrafe.z + dZoom.z > zBoundMin)
+		theZoom.z += dZoom.z;
 }
 
 void Camera::mouseMoved(int x, int y)
