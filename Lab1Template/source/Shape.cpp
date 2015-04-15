@@ -35,10 +35,13 @@ float Shape::getRadius(){
 	return scale / 2;
 }
 
-void Shape::setColorGreen()
-{
+void Shape::freezeShape(){
 	v.x *= 0.2;
 	v.z *= 0.2;
+}
+
+void Shape::setColorGreen()
+{
 	color = true;
 }
 

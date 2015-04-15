@@ -25,6 +25,7 @@ public:
 	void update(float t, float h, const glm::vec3 &g, const bool *keyToggles);
 	glm::vec3 getPosition();
 	void setColorGreen();
+	void freezeShape();
 	float getRadius();
 	bool isGreen();
 	

@@ -463,8 +463,8 @@ void checkCollisions(){
 			int index1 = std::distance(shapes.begin(), it1);
 			int index2 = std::distance(shapes.begin(), it2);
 			if(index1 != index2 && d <= it1->getRadius() + it2->getRadius()){
-				it1->setColorGreen();
-				it2->setColorGreen();
+				it1->freezeShape();
+				it2->freezeShape();
 			}
 		}
 	}
