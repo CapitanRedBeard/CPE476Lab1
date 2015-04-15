@@ -35,14 +35,14 @@ Camera::Camera() :
 	rotations(0.01, 0.01),
 	rfactor(0.0005f),
 	pfactor(0.0005f),
-	position(0.0f, 0.0f, 0.0f),
+	position(25.0f, 0.0f, -25.0f),
 	sfactor(0.005f),
 	state(0),
 	//Brandon Stuff
 	lookAtPoint(0.0f, 0.0f, 0.0f),
 	theEye(0.0f, 0.0f, 0.0f),
-	theStrafe(0.0f, 0.0f, 0.0f),
-	theZoom(0.0f, 0.0f, 0.0f)
+	theStrafe(25.0f, 1.0f, 0.0f),
+	theZoom(0.0f, 0.0f, -25.0f)
 {
 }
 
@@ -63,12 +63,22 @@ glm::vec3 Camera::getTheEye()
 
 void Camera::updateStrafe(glm::vec3 dStrafe)
 {
-	theStrafe += dStrafe;
+	//free camera
+	//theStrafe += dStrafe;
+
+	//The locked on y
+	theStrafe.x += dStrafe.x;
+	theStrafe.z += dStrafe.z;
 }
 
 void Camera::updateZoom(glm::vec3 dZoom)
 {
-	theZoom += dZoom;
+	//free camera
+	//theZoom += dZoom;
+
+	//The locked on y 
+	theZoom.x += dZoom.x;
+	theZoom.z += dZoom.z;
 }
 
 void Camera::mouseMoved(int x, int y)
