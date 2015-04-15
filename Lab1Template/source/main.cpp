@@ -468,6 +468,19 @@ void checkCollisions(){
 			}
 		}
 	}
+
+	for (std::vector<Shape>::iterator it1 = shapes.begin(); it1 != shapes.end(); ++it1)
+	{
+		glm::vec3 pos1 = it1 ->getPosition();
+		glm::vec3 camPos = camera.getPosition();
+		float d = sqrt(((pos1.x - camPos.x) * (pos1.x - camPos.x)) + ((pos1.z - camPos.z) * (pos1.z - camPos.z)));
+
+		if (d <= it1->getRadius() * 2)
+		{
+			it1->freezeShape();
+			it1->setColorGreen();
+		}
+	}
 }
 
 int main(int argc, char **argv)

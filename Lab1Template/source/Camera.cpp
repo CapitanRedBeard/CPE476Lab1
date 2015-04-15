@@ -61,6 +61,11 @@ glm::vec3 Camera::getTheEye()
 	return theEye;
 }
 
+glm::vec3 Camera::getPosition()
+{
+	return theStrafe + theZoom;
+}
+
 void Camera::updateStrafe(glm::vec3 dStrafe)
 {
 	//free camera
@@ -73,9 +78,9 @@ void Camera::updateStrafe(glm::vec3 dStrafe)
 
 	//The locked on y
 	if(theStrafe.x + theZoom.x + dStrafe.x < xBoundMax && theStrafe.x + theZoom.x + dStrafe.x > xBoundMin)
-		theStrafe.x += dStrafe.x;
+		theStrafe.x += dStrafe.x * 0.4;
 	if(theStrafe.z + theZoom.z + dStrafe.z < zBoundMax && theStrafe.z + theZoom.z + dStrafe.z > zBoundMin)
-		theStrafe.z += dStrafe.z;
+		theStrafe.z += dStrafe.z * 0.4;
 }
 
 void Camera::updateZoom(glm::vec3 dZoom)
@@ -85,9 +90,9 @@ void Camera::updateZoom(glm::vec3 dZoom)
 
 	//The locked on y 
 	if(theZoom.x + theStrafe.x + dZoom.x < xBoundMax && theZoom.x + theStrafe.x + dZoom.x > xBoundMin)
-		theZoom.x += dZoom.x;
+		theZoom.x += dZoom.x * 0.4;
 	if(theZoom.z + theStrafe.z + dZoom.z < zBoundMax && theZoom.z + theStrafe.z + dZoom.z > zBoundMin)
-		theZoom.z += dZoom.z;
+		theZoom.z += dZoom.z * 0.4;
 }
 
 void Camera::mouseMoved(int x, int y)

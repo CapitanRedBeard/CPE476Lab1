@@ -36,6 +36,7 @@ public:
 	//Brandon stuff
 	glm::vec3 getLookAtPoint();
 	glm::vec3 getTheEye();
+	glm::vec3 getPosition();
 	void updateStrafe(glm::vec3 dStrafe);
 	void updateZoom(glm::vec3 dZoom);
 	
