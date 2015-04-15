@@ -12,17 +12,21 @@
 #include "Camera.h"
 #include "Shape.h"
 #include "Terrain.h"
+#include "Wall.h"
 #include "MatrixStack.h"
 #include "tiny_obj_loader.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "RenderingHelper.h"
+#include "TextureLoader.h"
 #define NUMOBJ 20
 
 using namespace std;
 
 void idleGL();
+
+TextureLoader texLoader;
 
 //The Window & window size
 GLFWwindow* window;
@@ -32,6 +36,8 @@ int g_height;
 Terrain terrain;
 //Plane toggle for coloring
 GLint terrainToggleID;
+
+Wall wall;
 
 Camera camera;
 bool cull = false;
@@ -155,7 +161,9 @@ void initModels()
 	// }
 
 	//Initialize Terrain object
-	terrain.init();
+	terrain.init(&texLoader);
+
+	wall.init(&texLoader);
 
 	//initialize the modeltrans matrix stack
    ModelTrans.useModelViewMatrix();
@@ -250,6 +258,44 @@ bool installShaders(const string &vShaderName, const string &fShaderName)
 	return true;
 }
 
+void drawWalls()
+{
+	ModelTrans.loadIdentity();
+	ModelTrans.pushMatrix();
+		ModelTrans.translate(glm::vec3(3.0, 0.0, 0.0));
+		glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+		wall.draw(h_vertPos, h_vertNor, h_aTexCoord);
+		for (int i = 0; i < 7; i++)
+		{
+			ModelTrans.translate(glm::vec3(5.7, 0.0, 0.0));
+			glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+			wall.draw(h_vertPos, h_vertNor, h_aTexCoord);
+		}
+		ModelTrans.translate(glm::vec3(3.3, 0.0, 0.0));
+		glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+		wall.draw(h_vertPos, h_vertNor, h_aTexCoord);
+		for (int j = 0; j < 3; j++)
+		{
+			ModelTrans.translate(glm::vec3(2.8, 0.0, 0.0));
+			ModelTrans.pushMatrix();
+				ModelTrans.rotate(90.0, glm::vec3(0, 1, 0));
+				ModelTrans.translate(vec3(-3.0, 0.0, 0.0));
+				for (int i = 0; i < 8; i++)
+				{
+					ModelTrans.translate(glm::vec3(5.7, 0.0, 0.0));
+					glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+					wall.draw(h_vertPos, h_vertNor, h_aTexCoord);
+				}
+				ModelTrans.translate(glm::vec3(3.3, 0.0, 0.0));
+				glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+				wall.draw(h_vertPos, h_vertNor, h_aTexCoord);
+		}
+					ModelTrans.popMatrix();
+				ModelTrans.popMatrix();
+			ModelTrans.popMatrix();
+	ModelTrans.popMatrix();
+}
+
 void drawGL()
 {
 	// Clear buffers
@@ -332,6 +378,7 @@ void drawGL()
 	glUniform1i(terrainToggleID, 1);
 	glUniform1i(h_uTexUnit, 0);
 	terrain.draw(h_vertPos, h_vertNor, h_aTexCoord);
+	drawWalls();
 	glUniform1i(terrainToggleID, 0);
 	
 	// Unbind the program
@@ -388,30 +435,6 @@ void checkUserInput()
       camera.updateZoom(-view);
    }
 }
-
-void motionGL(int x, int y)
-{
-	float dx = (g_width / 2) - x;
-	float dy = (g_height / 2) - y;
-	printf("DX: %f, DY: %f\n", dx, dy);
-	//if((dx > 0.001 || dx < 0.001) && (dy > 0.001 || dy < 0.001)){
-		printf("DX: %f, DY: %f\n", dx, dy);
-		camera.mouseMoved(dx, dy);		
-	//}
-}
-
-/*void idleGL(){
-	timeNew = glutGet(GLUT_ELAPSED_TIME);
-	int dt = timeNew - timeOldDraw;
-	t += h;
-	// Update every 60Hz
-	if(dt > 1000.0/60.0) {
-		timeOldDraw = timeNew;
-		camera.update(keyToggles, mouse);
-		//glutPostRedisplay();
-		shape.update(t, h, g, keyToggles);
-	}
-}*/
 
 void window_size_callback(GLFWwindow* window, int w, int h){
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);

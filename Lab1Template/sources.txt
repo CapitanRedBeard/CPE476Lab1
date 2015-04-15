@@ -10,6 +10,7 @@ set(HEADERS
    Shape.h
    Terrain.h
    TextureLoader.h
+   Wall.h
 )
 
 # List all .c / .cpp files here
@@ -24,4 +25,5 @@ set(SOURCES
    Shape.cpp
    Terrain.cpp
    TextureLoader.cpp
+   Wall.cpp
 )

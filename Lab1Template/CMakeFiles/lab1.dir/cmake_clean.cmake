@@ -9,6 +9,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/lab1.dir/source/Shape.cpp.o"
   "CMakeFiles/lab1.dir/source/Terrain.cpp.o"
   "CMakeFiles/lab1.dir/source/TextureLoader.cpp.o"
+  "CMakeFiles/lab1.dir/source/Wall.cpp.o"
   "CMakeFiles/lab1.dir/dependencies/glad/src/glad.c.o"
   "lab1.pdb"
   "lab1"

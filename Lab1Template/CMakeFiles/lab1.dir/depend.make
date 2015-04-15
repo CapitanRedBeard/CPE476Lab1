@@ -91,12 +91,21 @@ CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/TextureLoader.cpp
 CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/TextureLoader.h
 CMakeFiles/lab1.dir/source/TextureLoader.cpp.o: source/glm/glm.hpp
 
+CMakeFiles/lab1.dir/source/Wall.cpp.o: source/GLSL.h
+CMakeFiles/lab1.dir/source/Wall.cpp.o: source/TextureLoader.h
+CMakeFiles/lab1.dir/source/Wall.cpp.o: source/Wall.cpp
+CMakeFiles/lab1.dir/source/Wall.cpp.o: source/Wall.h
+CMakeFiles/lab1.dir/source/Wall.cpp.o: source/glm/glm.hpp
+CMakeFiles/lab1.dir/source/Wall.cpp.o: source/tiny_obj_loader.h
+
 CMakeFiles/lab1.dir/source/main.cpp.o: source/Camera.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/GLSL.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/MatrixStack.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/RenderingHelper.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/Shape.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/Terrain.h
+CMakeFiles/lab1.dir/source/main.cpp.o: source/TextureLoader.h
+CMakeFiles/lab1.dir/source/main.cpp.o: source/Wall.h
 CMakeFiles/lab1.dir/source/main.cpp.o: source/glm/glm.hpp
 CMakeFiles/lab1.dir/source/main.cpp.o: source/glm/gtc/matrix_access.hpp
 CMakeFiles/lab1.dir/source/main.cpp.o: source/glm/gtc/matrix_access.inl

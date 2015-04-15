@@ -344,6 +344,30 @@ source/TextureLoader.cpp.s:
 	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/TextureLoader.cpp.s
 .PHONY : source/TextureLoader.cpp.s
 
+source/Wall.o: source/Wall.cpp.o
+.PHONY : source/Wall.o
+
+# target to build an object file
+source/Wall.cpp.o:
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/Wall.cpp.o
+.PHONY : source/Wall.cpp.o
+
+source/Wall.i: source/Wall.cpp.i
+.PHONY : source/Wall.i
+
+# target to preprocess a source file
+source/Wall.cpp.i:
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/Wall.cpp.i
+.PHONY : source/Wall.cpp.i
+
+source/Wall.s: source/Wall.cpp.s
+.PHONY : source/Wall.s
+
+# target to generate assembly for a file
+source/Wall.cpp.s:
+	$(MAKE) -f CMakeFiles/lab1.dir/build.make CMakeFiles/lab1.dir/source/Wall.cpp.s
+.PHONY : source/Wall.cpp.s
+
 source/main.o: source/main.cpp.o
 .PHONY : source/main.o
 
@@ -429,6 +453,9 @@ help:
 	@echo "... source/TextureLoader.o"
 	@echo "... source/TextureLoader.i"
 	@echo "... source/TextureLoader.s"
+	@echo "... source/Wall.o"
+	@echo "... source/Wall.i"
+	@echo "... source/Wall.s"
 	@echo "... source/main.o"
 	@echo "... source/main.i"
 	@echo "... source/main.s"

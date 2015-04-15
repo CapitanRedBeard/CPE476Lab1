@@ -8,12 +8,12 @@
 #include "glm/glm.hpp"
 #include "Terrain.h"
 #include "GLSL.h"
-#include "TextureLoader.h"
+
 
 using namespace std;
 
 int TERRAIN_TEX_ID = 100;
-TextureLoader texLoader;
+//TextureLoader texLoader;
 
 Terrain::Terrain() :
 	x(0.0f, 0.0f, 0.0f),
@@ -28,7 +28,7 @@ Terrain::~Terrain()
 {
 }
 
-void Terrain::init()
+void Terrain::init(TextureLoader* texLoader)
 {
 	x.x = 0.0f;
 	x.y = 0.0f;
@@ -138,7 +138,7 @@ void Terrain::init()
   	glBufferData(GL_ARRAY_BUFFER, sizeof(terrain_tex), terrain_tex, GL_STATIC_DRAW);
 
     //Load Texture
-    texLoader.LoadTexture((char *)"assets/green.bmp", TERRAIN_TEX_ID);
+    texLoader->LoadTexture((char *)"assets/green.bmp", TERRAIN_TEX_ID);
 
   	//unbind the arrays
   	glBindBuffer(GL_ARRAY_BUFFER, 0);

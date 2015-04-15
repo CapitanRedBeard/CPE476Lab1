@@ -4,7 +4,7 @@
  */
 
 #pragma once
-#ifndef _SHAPE_H_
+#ifndef _TEXTURELOADER_H_
 #include "GLSL.h"
 
 /*data structure for the image used for  texture mapping */

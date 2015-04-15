@@ -17,6 +17,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/Shape.cpp" "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir/source/Shape.cpp.o"
   "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/Terrain.cpp" "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir/source/Terrain.cpp.o"
   "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/TextureLoader.cpp" "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir/source/TextureLoader.cpp.o"
+  "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/Wall.cpp" "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir/source/Wall.cpp.o"
   "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/main.cpp" "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir/source/main.cpp.o"
   "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/source/tiny_obj_loader.cc" "/Users/squirrel_matrix/Desktop/CPE476Lab1/Lab1Template/CMakeFiles/lab1.dir/source/tiny_obj_loader.cc.o"
   )
