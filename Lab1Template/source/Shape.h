@@ -24,6 +24,7 @@ public:
 	void draw(GLint h_pos, GLint h_nor);
 	void update(float t, float h, const glm::vec3 &g, const bool *keyToggles);
 	glm::vec3 getPosition();
+	void setColorGreen();
 	
 private:
 	std::vector<tinyobj::shape_t> shapes;

@@ -18,7 +18,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "RenderingHelper.h"
-#define NUMOBJ 10
+#define NUMOBJ 20
 
 using namespace std;
 
@@ -36,7 +36,7 @@ bool cull = false;
 bool line = false;
 glm::vec2 mouse;
 int shapeCount = 1;
-std::vector<Shape> shapes(NUMOBJ);
+std::vector<Shape> shapes;
 //pid used for glUseProgram(pid);
 GLuint pid;
 GLint h_vertPos;
@@ -123,23 +123,31 @@ void initShape(char * filename)
 	// g = glm::vec3(0.0f, -0.01f, 0.0f);
 
 	//Load Shape object
-	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
-		it->load(filename);
-	}
+	// for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
+	// 	it->load(filename);
+	// }
 }
 
 /**
  * Generalized approach to intialization.
  */
+
+void spinOffNewShape(char * filename){
+	Shape temp;
+	temp.load(filename);
+	temp.init();
+	shapes.push_back(temp);
+}
+
 void initModels()
 {
 	//Maybe later have a inheritance of Shape and go
 	// through each and init each one.
 
 	//Initialize Shape object
-	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
-		it->init();
-	}
+	// for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
+	// 	it->init();
+	// }
 
 	//Initialize Terrain object
 	terrain.init();
@@ -275,7 +283,6 @@ void drawGL()
 
 	//glUniformMatrix4fv(h_MV, 1, GL_FALSE, glm::value_ptr(MV.topMatrix()));
 	
-
 	/*if(matCount == 1){
 		materialSet(material1);
 	}else if (matCount == 2){
@@ -287,8 +294,7 @@ void drawGL()
 	SetMaterial(1);
 
 	// Draw shapes
-	int i = 0;
-	for (std::vector<Shape>::iterator it = shapes.begin(); i < shapeCount; ++it, i++){
+	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
     // std::cout << ' ' << ;
 	// for(int i = 0; i < shapeCount; i++){
 		ModelTrans.loadIdentity();
@@ -316,6 +322,7 @@ void drawGL()
 /**
  * This will get called when any button on keyboard is pressed.
  */
+
 void checkUserInput()
 {
    vec3 view = camera.getLookAtPoint() - camera.getTheEye();
@@ -437,7 +444,7 @@ int main(int argc, char **argv)
 	initGL();
 	installShaders("lab7_vert.glsl", "lab7_frag.glsl");
 	std::string str = "assets/bunny.obj";
-	initShape(&str[0u]); //initShape(argv[0]);
+	// initShape(&str[0u]); //initShape(argv[0]);
   	initModels();
    do{
    	//maybe we should have the time step in here
@@ -445,11 +452,10 @@ int main(int argc, char **argv)
    	timeNew = glfwGetTime();
 	double dtSpawn = timeNew - timeOldSpawn;
 
-	printf("shapeCount: %f", dtSpawn);
 	// Update every 1s
 	if(shapeCount != NUMOBJ && dtSpawn >= timeOldSpawn) {
-		shapeCount++;
-		timeOldDraw += 1.0;
+		spinOffNewShape(&str[0u]);
+		timeOldSpawn += 1.0;
 	}
 
    	//Check for user input

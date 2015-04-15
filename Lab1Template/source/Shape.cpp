@@ -31,6 +31,14 @@ Shape::~Shape()
 {
 }
 
+
+void Shape::setColorGreen()
+{
+	color.x = 0.0f;
+	color.y = 1.0f;
+	color.z = 0.0f;
+}
+
 glm::vec3 Shape::getPosition()
 {
 	//Hard coded for now until we get things moving.
@@ -89,8 +97,8 @@ void Shape::init()
 	v.z = randFloat(-0.1f, -0.9f);
 	scale = 5.0f;
 	color.x = 1.0f;
-	color.y = 1.0f;
-	color.z = 1.0f;
+	color.y = 0.0f;
+	color.z = 0.0f;
 	color.w = 1.0f;
 
 	// Send the position array to the GPU
