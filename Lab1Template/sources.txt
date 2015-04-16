@@ -6,7 +6,7 @@ set(HEADERS
    RenderingHelper.h
    Camera.h
    MatrixStack.h
-   Program.h
+   #Program.h
    Shape.h
    Terrain.h
    TextureLoader.h
@@ -21,7 +21,7 @@ set(SOURCES
    RenderingHelper.cpp
    Camera.cpp
    MatrixStack.cpp
-   Program.cpp
+   #Program.cpp
    Shape.cpp
    Terrain.cpp
    TextureLoader.cpp
