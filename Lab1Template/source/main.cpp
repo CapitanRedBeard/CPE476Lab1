@@ -409,6 +409,24 @@ void drawGL()
 	proj.popMatrix();
 }
 
+bool hasCollided(glm::vec3 incr)
+{
+	for (std::vector<Shape>::iterator it1 = shapes.begin(); it1 != shapes.end(); ++it1)
+	{
+		glm::vec3 pos1 = it1 ->getPosition();
+		glm::vec3 camPos = camera.getPosition() + incr;
+		float d = sqrt(((pos1.x - camPos.x) * (pos1.x - camPos.x)) + ((pos1.z - camPos.z) * (pos1.z - camPos.z)));
+
+		if (d <= it1->getRadius() * 2)
+		{
+			it1->freezeShape();
+			it1->setColorGreen();
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * This will get called when any button on keyboard is pressed.
  */
@@ -425,32 +443,32 @@ void checkUserInput()
    {
       line = !line;
    }
-   if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS)
+   if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS && !hasCollided(-strafe))
    {
       //theStrafe -= strafe * strafeSpeed;
       camera.updateStrafe(-strafe);
    }
-   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && !hasCollided(strafe))
    {
       //theStrafe += strafe * strafeSpeed;
       camera.updateStrafe(strafe);
    }
-   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && !hasCollided(view*1.2f))
    {
       //theZoom += view * sprintSpeed;
-      camera.updateZoom(view);
+      camera.updateZoom(view*1.2f);
    }
-   else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+   else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !hasCollided(view))
    {
       //theZoom += view * walkSpeed;
       camera.updateZoom(view);
    }
-   if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+   if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && !hasCollided(-view*1.2f))
    {
       //theZoom -= view * sprintSpeed;
-      camera.updateZoom(-view);
+      camera.updateZoom(-view*1.2f);
    }
-   else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+   else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && !hasCollided(-view))
    {
       //theZoom -= view * walkSpeed;
       camera.updateZoom(-view);
@@ -564,11 +582,12 @@ int main(int argc, char **argv)
 	
 	
    	//Check for user input
-   	checkUserInput();
+   	//checkUserInput();
 		double dtDraw = timeNew - timeOldDraw;
 		t += h;
 		// Update every 60Hz
 		if(dtDraw >= (1.0 / 60) ) {
+			checkUserInput();
 			checkCollisions();
 			timeOldDraw += (1.0 / 60);
 			//Draw an image
