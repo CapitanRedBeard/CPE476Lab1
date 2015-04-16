@@ -21,11 +21,9 @@
 #include "RenderingHelper.h"
 #include "TextureLoader.h"
 
-
 using namespace std;
 
 void idleGL();
-
 
 float rF(float l, float h)
 {
@@ -39,6 +37,8 @@ TextureLoader texLoader;
 GLFWwindow* window;
 int g_width;
 int g_height;
+
+int points = 0;
 
 Terrain terrain;
 //Plane toggle for coloring
@@ -98,6 +98,8 @@ typedef struct{
 
 int matCount = 2;
 float optionS = 0.0f;
+int g_GiboLen;
+GLuint NumBufObj, NumIndBufObj, NumTexBufObj;
 
 //Rendering Helper
 RenderingHelper ModelTrans;
@@ -128,6 +130,51 @@ void SetMaterial(int i)
 			glUniform1f(h_s, 50.0);
 			break;
 	}
+}
+
+static void initNumPlane() {
+
+   float g_groundSize = 1;
+
+  // A x-z plane at y = g_groundY of dimension [-g_groundSize, g_groundSize]^2
+    float GrndPos[] = {
+    -g_groundSize, -g_groundSize, 0.0,
+    -g_groundSize, g_groundSize, 0.0,
+     g_groundSize, g_groundSize, 0.0, 
+     g_groundSize, -g_groundSize, 0.0
+    };
+
+    float GrndNorm[] = {
+     0, 0, 1,
+     0, 0, 1,
+     0, 0, 1,
+     0, 0, 1,
+     0, 0, 1,
+     0, 0, 1
+    };
+
+
+  static GLfloat GrndTex[] = {
+      0, 0, // back
+      0, 1,
+      1, 1,
+      1, 0 };
+
+    unsigned short idx[] = {0, 1, 2, 0, 2, 3};
+
+    g_GiboLen = 6;
+    glGenBuffers(1, &NumBufObj);
+    glBindBuffer(GL_ARRAY_BUFFER, NumBufObj);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GrndPos), GrndPos, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &NumTexBufObj);
+    glBindBuffer(GL_ARRAY_BUFFER, NumTexBufObj);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GrndTex), GrndTex, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &NumIndBufObj);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NumIndBufObj);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(idx), idx, GL_STATIC_DRAW);
+
 }
 
 /**
@@ -266,6 +313,33 @@ bool installShaders(const string &vShaderName, const string &fShaderName)
 	return true;
 }
 
+void drawScore()
+{
+	//set up the texture unit
+    glEnable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE0);
+
+    glBindTexture(GL_TEXTURE_2D, 101);
+
+   GLSL::enableVertexAttribArray(h_vertPos);
+   glBindBuffer(GL_ARRAY_BUFFER, NumBufObj);
+   glVertexAttribPointer(h_vertPos, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+   GLSL::enableVertexAttribArray(h_aTexCoord);
+   glBindBuffer(GL_ARRAY_BUFFER, NumTexBufObj);
+   glVertexAttribPointer(h_aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+   // Bind index array for drawing
+   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NumIndBufObj);
+   glDrawElements(GL_TRIANGLES, g_GiboLen, GL_UNSIGNED_INT, 0);
+
+   GLSL::disableVertexAttribArray(h_vertPos);
+   GLSL::disableVertexAttribArray(h_aTexCoord);
+   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+   glBindBuffer(GL_ARRAY_BUFFER, 0);
+   glDisable(GL_TEXTURE_2D);
+}
+
 void drawWalls()
 {
 	ModelTrans.loadIdentity();
@@ -332,15 +406,6 @@ void drawGL()
 	glUniform3fv(h_lightPos1, 1, glm::value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
 	glUniform3fv(h_lightPos2, 1, glm::value_ptr(glm::vec3(-1.0f, 1.0f, 1.0f)));
 	glUniform1f(h_option, optionS);
-
-
-	// Create matrix stacks
-	/*MatrixStack P, MV;
-	// Apply camera transforms
-	P.pushMatrix();
-	camera.applyProjectionMatrix(&P);
-	MV.pushMatrix();*/
-	//camera.applyViewMatrix(&MV);
 	
 	// Bind the program
 	
@@ -352,17 +417,6 @@ void drawGL()
 	proj.pushMatrix();
 	camera.applyViewMatrix(&view);
 	glUniformMatrix4fv(h_ViewMatrix, 1, GL_FALSE, glm::value_ptr(view.topMatrix()));
-
-	//glUniformMatrix4fv(h_MV, 1, GL_FALSE, glm::value_ptr(MV.topMatrix()));
-	
-	/*if(matCount == 1){
-		materialSet(material1);
-	}else if (matCount == 2){
-		materialSet(material2);
-	}else if (matCount == 3){
-		materialSet(material3);
-	}*/
-	//Instead of the above, we use the function SetMaterial.
 
 	bool winCondition = true;
 	// Draw shapes
@@ -385,6 +439,9 @@ void drawGL()
 
 	if(winCondition){
 		//reset bunnies & increase the count
+		printf("You won!\n");
+		points = 0;
+		printf("You have %d points!\n", points);
 		shapes.clear();
 		NUMOBJ += 10;
 	}
@@ -399,6 +456,17 @@ void drawGL()
 	glUniform1i(terrainToggleID, 1);
 	glUniform1i(h_uTexUnit, 0);
 	terrain.draw(h_vertPos, h_vertNor, h_aTexCoord);
+
+
+	ModelTrans.loadIdentity();
+	ModelTrans.pushMatrix();
+		ModelTrans.translate(glm::vec3(20, 0, -20));
+		ModelTrans.scale(200.0, 200.0, 200.0);
+		glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
+		ModelTrans.popMatrix();
+	drawScore();
+
+
 	drawWalls();
 	glUniform1i(terrainToggleID, 0);
 	
@@ -420,6 +488,10 @@ bool hasCollided(glm::vec3 incr)
 		if (d <= it1->getRadius() * 2)
 		{
 			it1->freezeShape();
+			if (!it1->isGreen())
+			{
+				printf("You have %d points!\n", ++points);
+			}
 			it1->setColorGreen();
 			return true;
 		}
@@ -506,6 +578,10 @@ void checkCollisions(){
 		if (d <= it1->getRadius() * 2)
 		{
 			it1->freezeShape();
+			if (!it1->isGreen())
+			{
+				printf("You have %d points!\n", ++points);
+			}
 			it1->setColorGreen();
 		}
 	}
