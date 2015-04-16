@@ -20,7 +20,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "RenderingHelper.h"
 #include "TextureLoader.h"
-#define NUMOBJ 20
+
 
 using namespace std;
 
@@ -46,6 +46,7 @@ GLint terrainToggleID;
 
 Wall wall;
 
+int NUMOBJ = 5;
 Camera camera;
 bool cull = false;
 bool line = false;
@@ -363,20 +364,29 @@ void drawGL()
 	}*/
 	//Instead of the above, we use the function SetMaterial.
 
+	bool winCondition = true;
 	// Draw shapes
 	for (std::vector<Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it){
     // std::cout << ' ' << ;
 	// for(int i = 0; i < shapeCount; i++){
 		if(it->isGreen())
 			SetMaterial(1);
-		else
+		else{
+			winCondition = false;
 			SetMaterial(0);
+		}
 		ModelTrans.loadIdentity();
 		ModelTrans.pushMatrix();
 		ModelTrans.translate(it->getPosition());
 		glUniformMatrix4fv(h_ModelMatrix, 1, GL_FALSE, glm::value_ptr(ModelTrans.modelViewMatrix));
 		ModelTrans.popMatrix();
 		it->draw(h_vertPos, h_vertNor);	
+	}
+
+	if(winCondition){
+		//reset bunnies & increase the count
+		shapes.clear();
+		NUMOBJ += 10;
 	}
 
 	SetMaterial(2);
@@ -548,10 +558,10 @@ int main(int argc, char **argv)
 				it = shapes.begin();
 			}
 		}
-
 		spinOffNewShape(&str[0u], randomX, randomZ);
 		timeOldSpawn += 1.0;
 	}
+	
 	
    	//Check for user input
    	checkUserInput();
